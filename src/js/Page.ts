@@ -3,11 +3,7 @@ export class Page {
   textContent: string;
   drawingContent;
 
-  saveDrawing() {
-    const canvas = document.getElementById("canvas");
-
-    if (typeof canvas !== "undefined") {
-      this.drawingContent = canvas.toDataURL();
-    }
+  constructor(type: string) {
+    this.type = type;
   }
 }
