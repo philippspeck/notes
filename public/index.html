@@ -6,14 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#FDBA74" />
     <script defer type="text/javascript" src="dist/app.js"></script>
-    <script>
-      if (!navigator.serviceWorker.controller) {
-        navigator.serviceWorker.register("serviceworker.js", {
-          scope: "/",
-        });
-      }
-    </script>
+    <script></script>
   </head>
 
-  <body></body>
+  <body>
+    <div x-data="notebook">
+      <button @click="notebook.addDrawingPage()">Add Page</button>
+      <template x-for="page, index in notebook.pages">
+        <button
+          x-text="index+1"
+          :class="{'text-rose-800': notebook.currentPage == index}"
+          @click="notebook.currentPage = index"
+        ></button>
+      </template>
+      <div id="page" class="w-full h-full">
+        <template x-if="notebook.pages[notebook.currentPage].type == 'drawing'">
+          <canvas></canvas
+        ></template>
+        <template x-if="notebook.pages[notebook.currentPage].type == 'text'">
+          <textarea x-text="notebook.pages[notebook.currentPage].textContent"></textarea>
+        </template>
+      </div>
+    </div>
+  </body>
 </html>
