@@ -36,19 +36,17 @@ export class Notebook {
     );
 
     /* Canvas Event Listeners */
-    document.addEventListener("pointerdown", (event) =>
+    this.canvas().addEventListener("pointerdown", (event) =>
       this.canvasPointerDown(event)
     );
-    document.addEventListener("pointerup", (event) =>
+    this.canvas().addEventListener("pointerup", (event) =>
       this.canvasPointerUp(event)
     );
-    document.addEventListener("pointermove", (event) =>
+    this.canvas().addEventListener("pointermove", (event) =>
       this.canvasPointerMove(event)
     );
     window.addEventListener("resize", () => this.canvasResize());
-    document.addEventListener("DOMContentLoaded", (event) =>
-      this.canvasResize()
-    );
+    document.addEventListener("DOMContentLoaded", () => this.canvasResize());
   }
 
   canvasContext() {
@@ -60,14 +58,20 @@ export class Notebook {
   }
 
   canvasPointerUp(event): void {
-    if (this.pages[this.currentPageIndex].type == "drawing") {
+    if (
+      this.pages[this.currentPageIndex].type == "drawing" &&
+      event.target == this.canvas()
+    ) {
       this.strokeActive = false;
       this.pages[this.currentPageIndex].saveDrawing();
     }
   }
 
   canvasPointerDown(event): void {
-    if (this.pages[this.currentPageIndex].type == "drawing") {
+    if (
+      this.pages[this.currentPageIndex].type == "drawing" &&
+      event.target == this.canvas()
+    ) {
       const canvasContext = this.canvasContext();
       this.strokeActive = true;
       canvasContext.beginPath();
@@ -75,7 +79,10 @@ export class Notebook {
   }
 
   canvasPointerMove(event): void {
-    if (this.pages[this.currentPageIndex].type == "drawing") {
+    if (
+      this.pages[this.currentPageIndex].type == "drawing" &&
+      event.target == this.canvas()
+    ) {
       if (this.strokeActive) {
         const canvasContext = this.canvasContext();
         canvasContext.lineTo(event.offsetX, event.offsetY);
