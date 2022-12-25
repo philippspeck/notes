@@ -8,7 +8,7 @@ export class Notebook {
 
   constructor() {
     if (this.pages.length == 0) {
-      this.pages.push({});
+      this.addTextPage();
     }
     if (typeof this.currentPageIndex == "undefined") {
       this.currentPageIndex = 0;
@@ -30,18 +30,22 @@ export class Notebook {
   }
 
   addEventListeners() {
-    document.addEventListener("pointerdown", (event) => {
-      this.canvasPointerDown(event);
-    });
-    document.addEventListener("pointerup", (event) => {
-      this.canvasPointerUp(event);
-    });
-    document.addEventListener("pointermove", (event) => {
-      this.canvasPointerMove(event);
-    });
-    window.addEventListener("resize", () => {
-      this.canvasResize();
-    });
+    /* Textbox Event Listeners */
+    document.addEventListener("keydown", (event) =>
+      this.canvasPointerDown(event)
+    );
+
+    /* Canvas Event Listeners */
+    document.addEventListener("pointerdown", (event) =>
+      this.canvasPointerDown(event)
+    );
+    document.addEventListener("pointerup", (event) =>
+      this.canvasPointerUp(event)
+    );
+    document.addEventListener("pointermove", (event) =>
+      this.canvasPointerMove(event)
+    );
+    window.addEventListener("resize", () => this.canvasResize());
     document.addEventListener("DOMContentLoaded", (event) =>
       this.canvasResize()
     );
@@ -56,27 +60,41 @@ export class Notebook {
   }
 
   canvasPointerUp(event): void {
-    this.strokeActive = false;
+    if (this.pages[this.currentPageIndex].type == "drawing") {
+      this.strokeActive = false;
+      this.pages[this.currentPageIndex].saveDrawing();
+    }
   }
 
   canvasPointerDown(event): void {
-    const canvasContext = this.canvasContext();
-    this.strokeActive = true;
-    canvasContext.beginPath();
+    if (this.pages[this.currentPageIndex].type == "drawing") {
+      const canvasContext = this.canvasContext();
+      this.strokeActive = true;
+      canvasContext.beginPath();
+    }
   }
 
   canvasPointerMove(event): void {
-    if (this.strokeActive) {
-      const canvasContext = this.canvasContext();
-      canvasContext.lineTo(event.offsetX, event.offsetY);
-      canvasContext.lineWidth = 2;
-      canvasContext.stroke();
-      canvasContext.moveTo(event.offsetX, event.offsetY);
+    if (this.pages[this.currentPageIndex].type == "drawing") {
+      if (this.strokeActive) {
+        const canvasContext = this.canvasContext();
+        canvasContext.lineTo(event.offsetX, event.offsetY);
+        canvasContext.lineWidth = 2;
+        canvasContext.stroke();
+        canvasContext.moveTo(event.offsetX, event.offsetY);
+      }
     }
   }
 
   canvasResize(): void {
-    this.canvas().width = window.innerWidth;
-    this.canvas().height = window.innerHeight;
+    if (this.pages[this.currentPageIndex].type == "drawing") {
+      this.canvas().width = window.innerWidth;
+      this.canvas().height = window.innerHeight;
+    }
+  }
+
+  changePage(pageNumber: number): void {
+    this.currentPageIndex = pageNumber;
+    this.currentPage().loadDrawing();
   }
 }

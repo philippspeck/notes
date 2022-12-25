@@ -10,8 +10,11 @@ export function notebook() {
     revitalize() {
       if (this.notebook.constructor.name !== "Notebook") {
         this.notebook = Object.assign(new Notebook(), this.notebook);
-        this.notebook.pages.forEach((page) => {
-          Object.assign(new Page(page.type), page);
+        this.notebook.pages.forEach((page, index) => {
+          this.notebook.pages[index] = Object.assign(new Page(page.type), page);
+          if (this.notebook.currentPageIndex == index) {
+            this.notebook.pages[index].loadDrawing();
+          }
         });
       }
     },

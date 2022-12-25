@@ -2,35 +2,38 @@
   <head>
     <title>Notes</title>
     <link rel="stylesheet" href="dist/style.css" />
-    <link rel="manifest" href="manifest.json" crossorigin="use-credentials" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#FDBA74" />
     <script defer type="text/javascript" src="dist/app.js"></script>
     <script></script>
   </head>
 
-  <body>
+  <body class="font-serif bg-paper">
     <div x-data="notebook">
       <nav class="absolute">
         <template x-for="page, index in notebook.pages">
           <button
             x-text="index+1"
-            :class="{'text-rose-800': notebook.currentPage == index}"
-            @click="notebook.currentPage = index"
+            :class="{'text-rose-800': notebook.currentPageIndex == index}"
+            @click="notebook.changePage(index)"
           ></button>
         </template>
         <button @click="notebook.addDrawingPage()">Add Drawing Page</button>
         <button @click="notebook.addTextPage()">Add Text Page</button>
       </nav>
       <div id="page" class="top-0 left-0 w-full h-full">
-        <template x-if="notebook.pages[notebook.currentPage].type == 'drawing'">
-          <canvas id="canvas" class="w-full h-full"></canvas
-        ></template>
-        <template x-if="notebook.pages[notebook.currentPage].type == 'text'">
-          <textarea
-            x-text="notebook.pages[notebook.currentPage].textContent"
-          ></textarea>
-        </template>
+        <canvas
+          x-show="notebook.pages[notebook.currentPageIndex].type == 'drawing'"
+          id="canvas"
+          class="w-full h-full"
+        ></canvas>
+        <textarea
+          x-show="notebook.pages[notebook.currentPageIndex].type == 'text'"
+          id="textarea"
+          class="p-8 w-full h-full resize-none bg-paper"
+          x-model="notebook.pages[notebook.currentPageIndex].textContent"
+        ></textarea>
       </div>
     </div>
   </body>
