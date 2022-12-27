@@ -27,7 +27,7 @@
             ></button>
           </template>
           <button
-            class="inline-flex justify-center items-center w-8 h-8 text-sm text-center rounded-full border-2 border-rose-300 border-dashed"
+            class="inline-flex justify-center items-center w-8 h-8 text-sm text-center rounded-full border-2 border-rose-300 border-dashed bg-paper"
             @click="notebook.addDrawingPage()"
           >
             <svg
@@ -42,14 +42,16 @@
             </svg>
           </button>
           <button
-            class="inline-flex justify-center items-center w-8 h-8 text-sm font-bold text-center rounded-full border-2 border-emerald-300 border-dashed"
+            class="inline-flex justify-center items-center w-8 h-8 text-sm font-bold text-center rounded-full border-2 border-emerald-300 border-dashed bg-paper"
             @click="notebook.addTextPage()"
           >
             T
           </button>
         </section>
         <section class="space-x-2">
-          <button
+          <a
+            :href="notebook.pages[notebook.currentPageIndex].drawingContent"
+            download="drawing.png"
             class="inline-flex justify-center items-center w-8 h-8 text-sm text-center text-white bg-gray-600 rounded"
             x-show="notebook.currentPage().type == 'drawing'"
           >
@@ -64,8 +66,7 @@
               />
               <path
                 d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"
-              />
-            </svg></button
+              /></svg></a
           ><button
             class="inline-flex justify-center items-center w-8 h-8 text-sm text-center text-white bg-gray-600 rounded"
             @click="notebook.deletePage(notebook.currentPageIndex)"
