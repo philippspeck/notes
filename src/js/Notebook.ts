@@ -109,6 +109,9 @@ export class Notebook {
 
   changePage(pageNumber: number): void {
     this.currentPageIndex = pageNumber;
+    if (this.currentPage().type == "drawing") {
+      this.canvasResize();
+    }
     this.currentPage().loadDrawing();
   }
 
