@@ -90,7 +90,9 @@ export class Notebook {
       this.pages[this.currentPageIndex].type == "drawing" &&
       event.target == this.canvas()
     ) {
+      console.log(this.strokeActive);
       if (this.strokeActive) {
+        console.log(event);
         const canvasContext = this.canvasContext();
         canvasContext.lineTo(event.offsetX, event.offsetY);
         canvasContext.lineWidth = 2;
