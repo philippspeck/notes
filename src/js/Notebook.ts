@@ -142,6 +142,6 @@ export class Notebook {
   }
 
   strokeWidth(pressure: number): number {
-    return 2 * Math.exp(pressure);
+    return Math.exp(pressure);
   }
 }
