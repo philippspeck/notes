@@ -23,10 +23,13 @@ export class Notebook {
 
   addDrawingPage() {
     this.pages.push(new Page("drawing"));
+    this.changePage(this.pages.length - 1);
   }
 
   addTextPage() {
     this.pages.push(new Page("text"));
+    this.changePage(this.pages.length - 1);
+    this.textarea().focus();
   }
 
   addEventListeners() {
@@ -55,6 +58,10 @@ export class Notebook {
 
   canvas() {
     return document.getElementById("canvas");
+  }
+
+  textarea() {
+    return document.getElementById("textarea");
   }
 
   canvasPointerUp(event): void {
@@ -103,5 +110,17 @@ export class Notebook {
   changePage(pageNumber: number): void {
     this.currentPageIndex = pageNumber;
     this.currentPage().loadDrawing();
+  }
+
+  deletePage(pageNumber: number): void {
+    if (confirm(`Are your sure you want to delete page ${pageNumber + 1}?`)) {
+      this.pages.splice(pageNumber, 1);
+      if (this.currentPageIndex == pageNumber) {
+        this.currentPageIndex--;
+      }
+      if (this.pages.length == 0) {
+        this.addTextPage();
+      }
+    }
   }
 }
