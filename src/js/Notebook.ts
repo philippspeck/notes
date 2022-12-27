@@ -4,6 +4,8 @@ export class Notebook {
   pages: any[] = [];
   currentPageIndex;
   strokeActive: boolean = false;
+  strokeLastX = null;
+  strokeLastY = null;
   canvasResolutionFactor: number = 1;
 
   constructor() {
@@ -71,6 +73,8 @@ export class Notebook {
     ) {
       this.strokeActive = false;
       this.pages[this.currentPageIndex].saveDrawing();
+      this.strokeLastX = null;
+      this.strokeLastY = null;
     }
   }
 
@@ -90,14 +94,17 @@ export class Notebook {
       this.pages[this.currentPageIndex].type == "drawing" &&
       event.target == this.canvas()
     ) {
-      console.log(this.strokeActive);
       if (this.strokeActive) {
-        console.log(event);
         const canvasContext = this.canvasContext();
-        canvasContext.lineTo(event.offsetX, event.offsetY);
-        canvasContext.lineWidth = 2;
-        canvasContext.stroke();
-        canvasContext.moveTo(event.offsetX, event.offsetY);
+        canvasContext.beginPath();
+        if (this.strokeLastX && this.strokeLastY) {
+          canvasContext.moveTo(this.strokeLastX, this.strokeLastY);
+          canvasContext.lineTo(event.offsetX, event.offsetY);
+          canvasContext.lineWidth = this.strokeWidth(event.pressure);
+          canvasContext.stroke();
+        }
+        this.strokeLastX = event.offsetX;
+        this.strokeLastY = event.offsetY;
       }
     }
   }
@@ -132,5 +139,9 @@ export class Notebook {
         this.addTextPage();
       }
     }
+  }
+
+  strokeWidth(pressure: number): number {
+    return 2 * Math.exp(pressure);
   }
 }

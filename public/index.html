@@ -14,12 +14,13 @@
     <div x-data="notebook">
       <nav
         class="flex absolute top-5 flex-row justify-between items-start px-5 w-full font-sans"
+        :class="{'opacity-10': notebook.strokeActive}"
       >
         <section class="space-x-2">
           <template x-for="page, index in notebook.pages">
             <button
               x-text="index+1"
-              class="inline-flex justify-center items-center w-8 h-8 text-sm text-center rounded-full border-2"
+              class="inline-flex justify-center items-center w-8 h-8 text-sm text-center rounded-full border-2 bg-paper"
               :class="{'bg-rose-300': notebook.currentPageIndex == index && notebook.pages[index].type == 'drawing', 'bg-emerald-300': notebook.currentPageIndex == index && notebook.pages[index].type == 'text', 'border-rose-300': notebook.pages[index].type == 'drawing', 'border-emerald-300': notebook.pages[index].type == 'text'}"
               @click="notebook.changePage(index)"
             ></button>
