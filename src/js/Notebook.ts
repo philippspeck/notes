@@ -115,8 +115,13 @@ export class Notebook {
   deletePage(pageNumber: number): void {
     if (confirm(`Are your sure you want to delete page ${pageNumber + 1}?`)) {
       this.pages.splice(pageNumber, 1);
-      if (this.currentPageIndex == pageNumber) {
-        this.currentPageIndex--;
+      if (
+        this.currentPageIndex == pageNumber &&
+        pageNumber < this.pages.length
+      ) {
+        this.changePage(pageNumber);
+      } else {
+        this.currentPageIndex = 0;
       }
       if (this.pages.length == 0) {
         this.addTextPage();

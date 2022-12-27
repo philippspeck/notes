@@ -2,17 +2,18 @@
   <head>
     <title>Notes</title>
     <link rel="stylesheet" href="dist/style.css" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <meta name="theme-color" content="#FDBA74" />
     <script defer type="text/javascript" src="dist/app.js"></script>
-    <script></script>
   </head>
 
   <body class="font-serif bg-paper">
     <div x-data="notebook">
       <nav
-        class="flex absolute top-5 flex-row justify-between px-5 w-full font-sans"
+        class="flex absolute top-5 flex-row justify-between items-start px-5 w-full font-sans"
       >
         <section class="space-x-2">
           <template x-for="page, index in notebook.pages">
